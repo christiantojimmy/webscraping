@@ -6,7 +6,7 @@ class Tiket
      * url: http://www.tiket.com/search/hotel
      * method: post
      */
-    private $SEARCH_POST_URL = "http://www.tiket.com/search/hotel";
+    private $SEARCH_POST_URL    = "http://www.tiket.com/search/hotel";
     private $SEARCH_POST_PARAMS = array(
         'newlayout' => 1,
         'q' => 'DKI Jakarta, Indonesia',
@@ -30,10 +30,10 @@ class Tiket
         CURLOPT_POST => TRUE
     );
 
-    public function get_search_post_curl_opt($num_of_request) {
+    public function get_search_post_curl_opt($num_of_pages) {
         $opts = array();
 
-        for($i=0; $i<$num_of_request; $i++) {
+        for($i=0; $i<$num_of_pages; $i++) {
             $params = $this->SEARCH_POST_PARAMS;
             $params['page'] = $i + 1;
             $post_fields = http_build_query($params);

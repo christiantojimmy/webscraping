@@ -3,11 +3,13 @@ error_reporting(E_ALL & ~E_WARNING);
 
 require_once(dirname(__FILE__) . '/classes/Crawler.php');
 require_once(dirname(__FILE__) . '/classes/Tiket.php');
+require_once(dirname(__FILE__) . '/classes/Booking.php');
 
 $start = microtime(true);
 
 $crawler = new Crawler();
 $tiket = new Tiket();
+$booking = new Booking();
 
 $responses = $crawler->multi_curl_resp($tiket->get_search_post_curl_opt(10));
 foreach ( $responses as $resp ) {
@@ -16,6 +18,14 @@ foreach ( $responses as $resp ) {
     $xpath = new DOMXPath($doc);
     print_r(get_arr_value($xpath->query("//ul/div/div/li/div/h3/a")));
     print_r(get_arr_value($xpath->query("//ul/div/div/li/div/h4/span/@rel")));
+}
+
+$responses = $crawler->multi_curl_resp($booking->get_search_get_curl_opt(15));
+foreach ( $responses as $resp ) {
+    $doc = new DOMDocument();
+    $doc->loadHTML($resp);
+    $xpath = new DOMXPath($doc);
+    print_r(get_arr_value($xpath->query("//h3/a")));
 }
 
 $time_elapsed_secs = microtime(true) - $start;
