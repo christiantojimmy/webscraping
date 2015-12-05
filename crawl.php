@@ -20,17 +20,17 @@ foreach ( $responses as $resp ) {
     print_r(get_arr_value($xpath->query("//ul/div/div/li/div/h4/span/@rel")));
 }
 
-$responses = $crawler->multi_curl_resp($booking->get_search_get_curl_opt(15));
+$responses = $crawler->multi_curl_resp($booking->get_search_get_curl_opt(10));
 foreach ( $responses as $resp ) {
     $doc = new DOMDocument();
     $doc->loadHTML($resp);
     $xpath = new DOMXPath($doc);
     print_r(get_arr_value($xpath->query("//h3/a")));
+    print_r(get_arr_value($xpath->query("//b")));
 }
 
 $time_elapsed_secs = microtime(true) - $start;
 echo "Time elapsed $time_elapsed_secs s" . PHP_EOL;
-
 
 function get_arr_value($elements)
 {
