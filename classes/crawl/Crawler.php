@@ -1,5 +1,7 @@
 <?php
 
+namespace crawl;
+
 class Crawler
 {
     /*
@@ -57,9 +59,9 @@ class Crawler
      */
     function extract_data($curl_response, $xpath_expression)
     {
-        $doc = new DOMDocument();
+        $doc = new \DOMDocument();
         $doc->loadHTML($curl_response);
-        $xpath = new DOMXPath($doc);
+        $xpath = new \DOMXPath($doc);
         $elements = $xpath->query($xpath_expression);
 
         $arr = [];
@@ -73,6 +75,48 @@ class Crawler
         }
 
         return $arr;
+    }
+
+    /*
+     * Use for fill data from extracted data by method extract_data
+     * Parameter: class_name:string, arr_attribute_name:arr[string], arr_extracted_data:arr[string]
+     * Result: array of class_name
+     */
+    function fill_data($class_name, $arr_attribute_name, $arr_extracted_data)
+    {
+        $valid = true;
+        if(count($arr_extracted_data) != count($arr_attribute_name)) {
+            $valid = false;
+        }else{
+            $arr_length = count($arr_extracted_data[0]);
+
+            foreach($arr_extracted_data as $extracted_data) {
+                if($arr_length != count($extracted_data)) {
+                    $valid = false;
+                }
+            }
+        }
+
+        if($valid) {
+            $result = array();
+
+            for($i=0; $i<count($arr_extracted_data[0]); $i++) {
+                $class    = new \ReflectionClass($class_name);
+                $instance = $class->newInstanceArgs(array());
+
+                for($j=0; $j<count($arr_attribute_name); $j++) {
+                    $attribute_name = $arr_attribute_name[$j];
+                    $data           = $arr_extracted_data[$j][$i];
+                    $instance->setAttribute($attribute_name, $data);
+                }
+
+                $result[] = $instance;
+            }
+
+            return $result;
+        }else{
+            return null;
+        }
     }
 
 }
