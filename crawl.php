@@ -13,36 +13,17 @@ $booking = new Booking();
 
 $responses = $crawler->multi_curl_resp($tiket->get_search_post_curl_opt(10));
 foreach ( $responses as $resp ) {
-    $doc = new DOMDocument();
-    $doc->loadHTML($resp);
-    $xpath = new DOMXPath($doc);
-    print_r(get_arr_value($xpath->query("//ul/div/div/li/div/h3/a")));
-    print_r(get_arr_value($xpath->query("//ul/div/div/li/div/h4/span/@rel")));
+    print_r($crawler->extract_data($resp, Tiket::XPATH_SEARCH_RESULT_HOTEL_NAME));
+    print_r($crawler->extract_data($resp, Tiket::XPATH_SEARCH_RESULT_HOTEL_LINK));
+    print_r($crawler->extract_data($resp, Tiket::XPATH_SEARCH_RESULT_HOTEL_PRICE));
 }
 
 $responses = $crawler->multi_curl_resp($booking->get_search_get_curl_opt(10));
 foreach ( $responses as $resp ) {
-    $doc = new DOMDocument();
-    $doc->loadHTML($resp);
-    $xpath = new DOMXPath($doc);
-    print_r(get_arr_value($xpath->query("//h3/a")));
-    print_r(get_arr_value($xpath->query("//b")));
+    print_r($crawler->extract_data($resp, Booking::XPATH_SEARCH_RESULT_HOTEL_NAME));
+    print_r($crawler->extract_data($resp, Booking::XPATH_SEARCH_RESULT_HOTEL_LINK));
+    print_r($crawler->extract_data($resp, Booking::XPATH_SEARCH_RESULT_HOTEL_PRICE));
 }
 
 $time_elapsed_secs = microtime(true) - $start;
 echo "Time elapsed $time_elapsed_secs s" . PHP_EOL;
-
-function get_arr_value($elements)
-{
-    $arr = [];
-    if (!is_null($elements)) {
-        foreach ($elements as $element) {
-            $nodes = $element->childNodes;
-            foreach ($nodes as $node) {
-                array_push($arr, trim($node->nodeValue));
-            }
-        }
-    }
-
-    return $arr;
-}

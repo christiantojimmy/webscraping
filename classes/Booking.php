@@ -3,6 +3,13 @@
 class Booking
 {
     /*
+     * Static XPath Variable
+     */
+    const XPATH_SEARCH_RESULT_HOTEL_NAME    = "//div[@id='hotellist_inner']/div[descendant::td[@class='roomPrice sr_discount']]//a[@class='hotel_name_link url']";
+    const XPATH_SEARCH_RESULT_HOTEL_LINK    = "//div[@id='hotellist_inner']/div[descendant::td[@class='roomPrice sr_discount']]//a[@class='hotel_name_link url']/@href";
+    const XPATH_SEARCH_RESULT_HOTEL_PRICE   = "//div[@id='hotellist_inner']/div//td[@class='roomPrice sr_discount']//strong/b";
+
+    /*
      * url: http://www.booking.com/searchresults.html
      * method: get
      */

@@ -3,6 +3,14 @@
 class Tiket
 {
     /*
+     * Static XPath Variable
+     */
+    const XPATH_SEARCH_RESULT_HOTEL_NAME    = "//ul/div/div/li/div/h3/a";
+    const XPATH_SEARCH_RESULT_HOTEL_LINK    = "//ul/div/div/li/div/h3/a/@href";
+    const XPATH_SEARCH_RESULT_HOTEL_PRICE   = "//ul/div/div/li/div/h4/span/@rel";
+
+
+    /*
      * url: http://www.tiket.com/search/hotel
      * method: post
      */

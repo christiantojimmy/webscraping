@@ -49,4 +49,30 @@ class Crawler
             return $resp;
         }
     }
+
+    /*
+     * Use for extract data from curl response
+     * Parameter: curl_response, xpath_expression:string
+     * Result: array of string
+     */
+    function extract_data($curl_response, $xpath_expression)
+    {
+        $doc = new DOMDocument();
+        $doc->loadHTML($curl_response);
+        $xpath = new DOMXPath($doc);
+        $elements = $xpath->query($xpath_expression);
+
+        $arr = [];
+        if (!is_null($elements)) {
+            foreach ($elements as $element) {
+                $nodes = $element->childNodes;
+                foreach ($nodes as $node) {
+                    array_push($arr, trim($node->nodeValue));
+                }
+            }
+        }
+
+        return $arr;
+    }
+
 }
