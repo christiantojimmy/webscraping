@@ -31,6 +31,6 @@ class DataSearchHotelResult
 
     public function setAttribute($attributeName, $value)
     {
-        $this->$attributeName = $value;
+        $this->$attributeName = htmlentities($value);
     }
 }
